@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "Full Face",
+    "mainCategoryId": 1
+  },
+  {
+    "id": 2,
+    "name": "Open Face",
+    "mainCategoryId": 1
+  },
+  {
+    "id": 3,
+    "name": "Modular",
+    "mainCategoryId": 1
+  },
+  {
+    "id": 4,
+    "name": "Half Shell",
+    "mainCategoryId": 1
+  },
+  {
+    "id": 5,
+    "name": "Leather",
+    "mainCategoryId": 2
+  },
+  {
+    "id": 6,
+    "name": "Textile",
+    "mainCategoryId": 2
+  },
+  {
+    "id": 7,
+    "name": "Winter",
+    "mainCategoryId": 2
+  },
+  {
+    "id": 8,
+    "name": "Summer",
+    "mainCategoryId": 2
+  },
+  {
+    "id": 9,
+    "name": "Waterproof",
+    "mainCategoryId": 3
+  },
+  {
+    "id": 10,
+    "name": "Windproof",
+    "mainCategoryId": 3
+  },
+  {
+    "id": 11,
+    "name": "Leather",
+    "mainCategoryId": 3
+  },
+  {
+    "id": 12,
+    "name": "Textile",
+    "mainCategoryId": 3
+  },
+  {
+    "id": 13,
+    "name": "Jeans",
+    "mainCategoryId": 4
+  },
+  {
+    "id": 14,
+    "name": "Leather",
+    "mainCategoryId": 4
+  },
+  {
+    "id": 15,
+    "name": "Textile",
+    "mainCategoryId": 4
+  },
+  {
+    "id": 16,
+    "name": "Waterproof",
+    "mainCategoryId": 4
+  }
+]
