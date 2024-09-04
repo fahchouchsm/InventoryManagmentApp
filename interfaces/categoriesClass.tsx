@@ -2,46 +2,30 @@ import mainCategories from "../data/mainCategories.json";
 
 export interface SubCategorieInt {
   name: string | null;
-  subId: number | null;
+  subId: number;
 }
 
-export interface MainCategorieInt {
-  mainCatid: number | null;
-  catName: string | null;
-
-  getIdNumber(
-    mainCatName: string | null,
-    data: { id: number; name: string; subId?: number }[]
-  ): number;
-
-  assignSubCatIds(subCategories: SubCategorieInt[]): SubCategorieInt[];
-}
-
-export default class MainCategorie implements MainCategorieInt {
+export default class MainCategorie {
   mainCatid: number | null = null;
   catName: string | null = null;
   subCategories: SubCategorieInt[] = [];
 
-  getIdNumber(
-    mainCatName: string | null,
-    data: { id: number; name: string; subId?: number }[]
-  ): number {
-    if (mainCatName) {
-      const result = data.find(
-        (mainCategorie) =>
-          mainCategorie.name.toLowerCase().trim() ===
-          mainCatName.toLowerCase().trim()
-      )?.id;
-
-      if (result !== undefined) {
-        return result;
-      }
+  constructor(mainCatId: number, subCatIds: SubCategorieInt[]) {
+    if (mainCatId === null) {
+      throw new Error("Main Category ID is required");
     }
 
-    throw new Error("Main Category Id Not Found");
+    this.mainCatid = mainCatId;
+    this.catName = this.getCategoryNameById(mainCatId);
+    this.subCategories = this.assignSubCatIds(subCatIds);
   }
 
-  assignSubCatIds(subCategories: SubCategorieInt[]): SubCategorieInt[] {
+  private getCategoryNameById(id: number): string | null {
+    const category = mainCategories.find((cat) => cat.id === id);
+    return category ? category.name : null;
+  }
+
+  private assignSubCatIds(subCategories: SubCategorieInt[]): SubCategorieInt[] {
     return subCategories.map((subCat) => {
       if (subCat.subId === null && subCat.name) {
         const foundSubCat = mainCategories.find(
@@ -57,22 +41,5 @@ export default class MainCategorie implements MainCategorieInt {
       }
       return subCat;
     });
-  }
-
-  constructor(
-    mainCatId: number | null,
-    mainCatName: string | null,
-    subCatIds: SubCategorieInt[]
-  ) {
-    if (mainCatId !== null) {
-      this.mainCatid = mainCatId;
-    } else if (mainCatName) {
-      this.mainCatid = this.getIdNumber(mainCatName, mainCategories);
-    } else {
-      throw new Error("Main Category ID or Name is required");
-    }
-
-    this.catName = mainCatName;
-    this.subCategories = this.assignSubCatIds(subCatIds);
   }
 }

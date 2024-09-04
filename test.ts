@@ -1,4 +1,4 @@
-import _ from "lodash";
-import Product from "./interfaces/pruductClass";
+const fruits = ["kiwi", "pineapple", "mango"];
 
-const product = new Product();
+fruits[fruits.length] = "apple";
+console.log(fruits);

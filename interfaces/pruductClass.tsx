@@ -17,7 +17,7 @@ export interface order {
  *
  */
 export default class Product extends MainCategorie {
-  id: number;
+  public id: number | null = null;
   name: string;
   quantityAvailable: number = 0;
   addingDate: Date;
@@ -30,32 +30,31 @@ export default class Product extends MainCategorie {
     buying: [],
     selling: [],
   };
-  /**
-   *
-   * @param id
-   * @param name
-   * @param quantityAvailable
-   * @param mainCatId
-   * @param mainCatName
-   * @param subCategories
-   */
-  constructor(
-    id: number,
+  private constructor(
     name: string,
     quantityAvailable: number,
-    mainCatId: number | null,
-    mainCatName: string | null,
+    mainCatId: number,
     subCategories: SubCategorieInt[]
   ) {
-    // Ensure that at least a main category is provided
-    if (!mainCatId && !mainCatName) {
-      throw new Error("A main category ID or name must be provided");
-    }
-    super(mainCatId, mainCatName, subCategories);
-    this.id = id;
+    super(mainCatId, subCategories);
     this.name = name;
     this.quantityAvailable = quantityAvailable;
     this.addingDate = new Date();
+  }
+  static async create(
+    name: string,
+    quantityAvailable: number,
+    mainCatId: number,
+    subCategories: SubCategorieInt[]
+  ): Promise<Product> {
+    const product = new Product(
+      name,
+      quantityAvailable,
+      mainCatId,
+      subCategories
+    );
+    product.id = await product.getLastIdNumber();
+    return product;
   }
 
   isAvailable(): boolean {
@@ -81,12 +80,22 @@ export default class Product extends MainCategorie {
     try {
       const directoryPath = `${RNFS.ExternalDirectoryPath}/StockManagmentApp`;
       if (await this.createAppFolderIfNeeded(directoryPath)) {
+        const productsData = await RNFS.readFile(
+          `${directoryPath}/productsData.json`
+        );
+        const parsedData = JSON.parse(productsData);
+
+        if (Array.isArray(parsedData)) {
+          return parsedData.length;
+        } else {
+          console.log("Invalid data format in productsData.json");
+          return 0;
+        }
       } else {
-        throw new Error("Error creating & locating ExternalDirectoryPath...");
+        throw new Error("Failed to create or access directory path.");
       }
-      return 0;
     } catch (error) {
-      console.log(error);
+      console.log("Error in getLastIdNumber:", error);
       return 0;
     }
   }
